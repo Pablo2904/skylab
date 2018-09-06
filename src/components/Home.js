@@ -1,44 +1,50 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import Poll from './Poll'
+import New from './New'
 
 
 class Home extends Component {
   state = {
-    question:"",
+    question:[],
     tag:[],
+    flag:false
   }
 
-componentDidMount() {
-  if (this.props.location.state !== undefined) {
-    const newtag = this.props.location.state.tag;
-    const newquestion = this.props.location.state.question;
-
-    this.setState({
-      tag: newtag,
-      question: newquestion
-    })
+newHandler = e => {
+  let flag = this.state.flag;
+  if (flag) {
+    flag = false;
+  } else {
+    flag = true;
   }
+  this.setState ({
+    flag
+  });
 }
-
+onClickForm (data) {
+    this.setState({
+      question: [...this.state.question, data.question],
+      tag:[...this.state.tag, data.tag]
+    });
+}
   render() {
     return (
-      <div style={{marginTop:"200px", width:"1200px", marginLeft:"auto", marginRight:"auto"}}>
+      <div style={{marginTop:"120px", width:"80%", marginLeft:"auto", marginRight:"auto", flexWrap:"wrap",display:"flex", justifyContent:"space-around",alignItems:"center"}}>
         <ul style= {{display:"flex",justifyContent:"center",alignItems:"center"}}>
-        <Poll
-          question={this.state.question}
-          tag={this.state.tag}
-        />
 
+            <Poll
+              question={this.state.question}
+              tag={this.state.tag}
+            />
 
         </ul>
-        <div style={{marginTop:"30px"}} >
-          <Link to="/New">
-            <button
-            style={{width:"100px", height:"80px", cursor:"pointer" }}>
-              Nowa Ankieta
+        <div style={{marginTop:"30px", display:"flex", justifyContent:"center"}} >
+            <button style={{width:"100px", height:"80px", cursor:"pointer",marginTop:"40px" }} onClick={this.newHandler}>
+              {!this.state.flag?('Add Poll Panel'):('Remove Panel')}
+
             </button>
-          </Link>
+            {this.state.flag && <New clicked={ this.onClickForm.bind(this)}/>}
+
         </div>
       </div>
     )

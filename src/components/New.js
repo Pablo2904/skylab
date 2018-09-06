@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
 
 class New extends Component {
   state = {
@@ -23,10 +22,11 @@ class New extends Component {
    const tag = this.state.tag
    if (!value) return;
    this.setState({
-     tag: [value , ...tag],
+     tag: [ ...tag, value ],
      value: "",
    })
  }
+
  manageInput = e => {
    this.setState({value: e.target.value});
  }
@@ -35,19 +35,25 @@ class New extends Component {
    const tag = [...this.state.tag];
    tag.splice(e, 1);
    this.setState({tag})
-}
+ }
+
+  onClickHandle(){
+    this.props.clicked(this.state)
+    this.setState({
+      tag:[]
+    })
+  }
   render() {
     return (
-      <div style={{marginTop:"200px", width:"300px", marginLeft:"auto", marginRight:"auto"}}>
-        <div style={{padding:"20px", border:"1px solid black"}}>
-          <Link  to="/">Go Back</Link>
-        </div>
+      <div style={{marginLeft:"15px", width:"300px", }}>
+
         <div>
           <div style={{marginTop:"25px"}}>
             <label>Question</label>
             <div>
               <input
                 type="text"
+                value={this.state.question}
                 onChange = {this.addQuestion}
               />
             </div>
@@ -55,7 +61,7 @@ class New extends Component {
           <form onSubmit={this.handleSubmit}>
             <div>
               <h2>Vote options:</h2>
-              <ul id="list">
+              <ul id="list" style={{marginLeft:"0",display:"flex",flexWrap:""}}>
                 {this.state.tag.map((item, index) => {
                   return (
                     <li key={item} style={{padding:"10px", listStyleType:"none",display:"inline-block", border:"1px solid black", marginLeft:"10px"}}
@@ -87,14 +93,10 @@ class New extends Component {
             </div>
           </form>
           <div>
-            <Link to={{ pathname: '/', state: {
-              question: this.state.question,
-              tag : this.state.tag
-            } }}>
-              <button style={{padding:"8px", marginTop:"10px"}}>
-                Add new poll
-              </button>
-            </Link>
+            <button style={{padding:"8px", marginTop:"10px"}} onClick={() => this.onClickHandle()}>
+              Add new poll
+            </button>
+
           </div>
         </div>
       </div>
