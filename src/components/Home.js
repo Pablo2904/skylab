@@ -9,20 +9,19 @@ class Home extends Component {
     tag:[],
   }
 
-componentWillMount() {
-  
-  const tag = this.props.location.state.tag;
-  const question = this.props.location.state.question;
+componentDidMount() {
+  if (this.props.location.state !== undefined) {
+    const newtag = this.props.location.state.tag;
+    const newquestion = this.props.location.state.question;
 
-  this.setState({
-    tag,
-    question
-  })
+    this.setState({
+      tag: newtag,
+      question: newquestion
+    })
+  }
 }
-componentWillUpdate () {
-}
+
   render() {
-
     return (
       <div style={{marginTop:"200px", width:"1200px", marginLeft:"auto", marginRight:"auto"}}>
         <ul style= {{display:"flex",justifyContent:"center",alignItems:"center"}}>
